@@ -1,4 +1,4 @@
-const ytdl = require("ytdl-core");
+const ytdl = require('ytdl-core-discord');
 
 module.exports = {
   name: "play",
@@ -61,8 +61,7 @@ module.exports = {
       message.channel.send(error.message);
     }
   },
-
-  play(message, song) {
+  async play(message, song) {
     const queue = message.client.queue;
     const guild = message.guild;
     const serverQueue = queue.get(message.guild.id);
@@ -74,7 +73,7 @@ module.exports = {
     }
 
     const dispatcher = serverQueue.connection
-      .play(ytdl(song.url))
+      .play(await ytdl(song.url), { type: 'opus' })
       .on("finish", () => {
         serverQueue.songs.shift();
         this.play(message, serverQueue.songs[0]);
