@@ -73,7 +73,7 @@ module.exports = {
     }
 
     const dispatcher = serverQueue.connection
-      .play(await ytdl(song.url), { type: 'opus' })
+      .play(await ytdl(song.url), { type: 'opus', highWaterMark: 50 })
       .on("finish", () => {
         serverQueue.songs.shift();
         this.play(message, serverQueue.songs[0]);
